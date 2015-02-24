@@ -1,0 +1,3 @@
+/application/cache/
+/vendor
+composer.lock

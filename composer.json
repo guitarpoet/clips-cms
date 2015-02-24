@@ -1,0 +1,20 @@
+{
+    "name": "jack/clips-cms",
+    "description": "A simple CMS based on clips-tool",
+    "authors": [
+        {
+            "name": "Jack",
+            "email": "guitarpoet@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+	"autoload": {
+		"psr-4": {
+			"Clips\\Cms\\": "application/"
+		}
+	},
+	"require": {
+		"php": ">=5.3.0",
+        "guitarpoet/clips-tool": "*"
+	}
+}

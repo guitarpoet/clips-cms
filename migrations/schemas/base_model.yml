@@ -1,0 +1,19 @@
+groups:
+    name:
+        type: string
+        key: true
+        options:
+            limit: 20
+
+users:
+    username:
+        type: string
+        key: true
+        options:
+            limit: 20
+    password:
+        type: string
+        options:
+            limit: 60
+    group_id:
+        foreign_key: groups
