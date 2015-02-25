@@ -1,12 +1,7 @@
 {extends file='admin-layout.tpl'}
 	{block name="main"}
 		{container}
-			{row id="toolbar"}
-				{a class="btn btn-primary" uri="admin/user/create"}
-					{lang}Save{/lang}
-				{/a}
-			{/row}
-			{row}
+			{row layout=[2,10] layout-1280=[3,9]}
 				{form name="admin/user_create"}
 					{field field="username"}{/field}
 					{field field="password"}{password}{/field}

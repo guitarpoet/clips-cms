@@ -13,7 +13,6 @@ use Clips\Controller;
 class UserController extends Controller {
 
 	/**
-	 * @Clips\Model("user")
 	 * @Clips\Widgets\DataTable("admin/user_home")
 	 */
 	public function index() {
@@ -23,14 +22,16 @@ class UserController extends Controller {
 	/**
 	 * @Clips\Form('admin/user_create')
 	 */
-	public function create_form() {
-		var_dump($this->post());
+	public function create() {
+		return $this->render('admin/user/create');
 	}
 
 	/**
+	 * @Clips\Model("user")
 	 * @Clips\Form('admin/user_create')
 	 */
-	public function create() {
-		return $this->render('admin/user/create');
+	public function create_form() {
+		$this->user->insert($this->user->cleanFields('users', $this->post()));
+		return $this->redirect(\Clips\site_url('admin/user'));
 	}
 }
