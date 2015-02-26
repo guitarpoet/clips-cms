@@ -5,6 +5,6 @@ test:
 migrate:
 	@mysql -u root -e "drop database if exists ${DB}"
 	@mysql -u root -e "create database ${DB}"
-	@clips phinx migrate
+	@./vendor/bin/clips phinx migrate
 c:
 	@mysql -u root "${DB}"

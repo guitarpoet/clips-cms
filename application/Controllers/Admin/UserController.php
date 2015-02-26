@@ -13,17 +13,19 @@ use Clips\Controller;
 class UserController extends Controller {
 
 	/**
-	 * @Clips\Widgets\DataTable("admin/user_home")
+	 * @Clips\Widgets\DataTable("admin_user_home")
 	 */
 	public function index() {
 		return $this->render('admin/user/home');
 	}
 
 	/**
+	 * @Clips\Model("group")
 	 * @Clips\Form('admin/user_create')
 	 */
 	public function create() {
-		return $this->render('admin/user/create');
+		return $this->render('admin/user/create', array('groups' => 
+			$this->group->getAll()));
 	}
 
 	/**

@@ -11,4 +11,7 @@ use Clips\Libraries\DBModel;
  * @Clips\Model
  */
 class GroupModel extends DBModel {
+	public function getAll() {
+		return $this->select('*')->from('groups')->result();
+	}
 }

@@ -3,10 +3,13 @@
 		{container}
 			{row}
 				{form name="admin/user_create"}
-					{row layout=[6, 6] layout-lg=[4, 8]}
-						{field field="username"}{/field}
-						{field field="password"}{password}{/field}
-					{/row}
+					{field field="username"}{/field}
+					{field field="group_id"}
+						{select name="group_id" blank=true options=$groups label-field="name" value-field="id"}{/select}
+					{/field}
+					{field field="password"}
+						{password}
+					{/field}
 					{row class="action"}
 						{submit}
 					{/row}

@@ -12,6 +12,16 @@
 				]
         },
         {
+                "field": "group_id",
+                "label": "Group",
+                "rules": [
+					{
+						"type": "number"
+					}, 
+					"required"
+				]
+        },
+        {
                 "field": "password",
                 "label": "Password",
                 "rules": [
