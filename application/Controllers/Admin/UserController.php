@@ -8,7 +8,7 @@ use Clips\Controller;
  * @author Jack
  * @date Tue Feb 24 16:07:01 2015
  *
- * @Clips\Widget({"html", "lang", "bootstrap"})
+ * @Clips\Widget({"lang", "grid"})
  */
 class UserController extends Controller {
 
