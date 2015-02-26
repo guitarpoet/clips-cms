@@ -1,0 +1,7 @@
+{
+    "from": "groups",
+    "columns": [
+        { "data": "groups.id", "title" : "Group ID", "action":"group/show"},
+        { "data": "groups.name", "title" : "Group Name" }
+    ]
+}

@@ -15,6 +15,6 @@
 	},
 	"require": {
 		"php": ">=5.3.0",
-        "guitarpoet/clips-tool": "*"
+        "guitarpoet/clips-tool": "dev-master"
 	}
 }

@@ -1,0 +1,21 @@
+[
+		{
+			"field": "id",
+			"label": "ID",
+			"rules": [
+				"readonly"
+			]
+		},
+        {
+                "field": "name",
+                "label": "Name",
+                "rules": [
+					{
+						"type": "string",
+						"minlength": 2,
+						"maxlength": 32
+					}, 
+					"required"
+				]
+        }
+]
