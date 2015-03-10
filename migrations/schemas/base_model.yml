@@ -17,3 +17,25 @@ users:
             limit: 60
     group_id:
         foreign_key: groups
+
+articles:
+    name: # The name of the article
+        type: string
+        key: true
+        options:
+            limit: 255
+    path: # The path of this article
+        type: string
+        key: true
+        options:
+            limit: 255
+    repo: # The repository path of this article
+        type: string
+        options:
+            limit: 1024
+    author: # The author id of this article
+        foreign_key: users 
+
+article_metas:
+    article_id: # The article reference
+        foreign_key: articles
