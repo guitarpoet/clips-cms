@@ -1,10 +1,13 @@
 <?php namespace Clips\Cms\Models; in_array(__FILE__, get_included_files()) or exit("No direct sript access allowed");
 
+use Clips\Libraries\DBModel;
+
 /**
- * The article model for manipulating articles
+ * Model to manipulate table articles
  *
  * @author Jack
- * @date Mon Mar  9 15:12:43 2015
+ * @version 1.0
+ * @date Wed Mar 11 10:43:44 2015
  *
  * @Clips\Model
  */

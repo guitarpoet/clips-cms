@@ -3,10 +3,11 @@
 use Clips\Libraries\DBModel;
 
 /**
- * The Model for user operations
+ * Model to manipulate table users
  *
  * @author Jack
- * @date Tue Feb 24 16:12:16 2015
+ * @version 1.0
+ * @date Wed Mar 11 10:43:44 2015
  *
  * @Clips\Model
  */

@@ -3,7 +3,7 @@
 use Clips\Libraries\DBModel;
 
 /**
- * Model to manipulate table groups
+ * Model to manipulate table article_metas
  *
  * @author Jack
  * @version 1.0
@@ -11,5 +11,5 @@ use Clips\Libraries\DBModel;
  *
  * @Clips\Model
  */
-class GroupModel extends DBModel {
+class ArticleMetaModel extends DBModel {
 }

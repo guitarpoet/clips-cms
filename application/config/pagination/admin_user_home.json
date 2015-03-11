@@ -3,6 +3,7 @@
     "columns": [
         { "data": "users.id", "title" : "User ID", "action":"user/show", "toggle": true},
         { "data": "users.username", "title" : "Username"},
+        { "data": "now() as now", "title" : "Now", "searchable": false},
         { "data": "groups.name", "title" : "Group", "refer":"groups.id", "action":"group/show"}
     ],
     "join": ["groups", {"users.group_id": "groups.id"}]

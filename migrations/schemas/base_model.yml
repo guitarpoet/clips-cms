@@ -1,5 +1,6 @@
 groups:
     name:
+        label: Name
         type: string
         key: true
         options:
@@ -7,11 +8,14 @@ groups:
 
 users:
     username:
+        label: Username
         type: string
         key: true
         options:
             limit: 20
     password:
+        label: Password
+        input-type: password
         type: string
         options:
             limit: 60
@@ -20,20 +24,24 @@ users:
 
 articles:
     name: # The name of the article
+        label: Name
         type: string
         key: true
         options:
             limit: 255
     path: # The path of this article
+        label: Path
         type: string
         key: true
         options:
             limit: 255
     repo: # The repository path of this article
+        label: Repository Path
         type: string
         options:
             limit: 1024
     author: # The author id of this article
+        label: Author
         foreign_key: users 
 
 article_metas:
