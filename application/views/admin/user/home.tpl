@@ -7,7 +7,7 @@
 				{/a}
 			{/row}
 			{row}
-				{datatable name="admin_user_home"}
+				{datatable name="user"}
 			{/row}
 		{/container}
 	{/block}

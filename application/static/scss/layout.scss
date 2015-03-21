@@ -1,0 +1,17 @@
+#container {
+	.box {
+		background-color: blue;
+		float: left;
+		h3 {
+			margin: 0;
+			padding: 0;
+			font-size: 30px;
+			color: #fff;
+			text-align: center;
+		}
+	}
+
+	.mutant.box {
+		background-color: green;
+	}
+}

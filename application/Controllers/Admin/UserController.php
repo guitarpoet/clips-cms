@@ -13,7 +13,7 @@ use Clips\Controller;
 class UserController extends Controller {
 
 	/**
-	 * @Clips\Widgets\DataTable("admin_user_home")
+	 * @Clips\Widgets\DataTable("user")
 	 */
 	public function index() {
 		return $this->render('admin/user/home');

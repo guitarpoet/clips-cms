@@ -1,5 +1,6 @@
 groups:
     name:
+        refer: true,
         label: Name
         type: string
         key: true
@@ -8,22 +9,29 @@ groups:
 
 users:
     username:
+        refer: true,
         label: Username
         type: string
         key: true
+        null: false
+        rules:
+            minlength: 4
         options:
             limit: 20
     password:
         label: Password
-        input-type: password
+        pagination: false
+        input_type: password
         type: string
         options:
             limit: 60
     group_id:
+        label: Group
         foreign_key: groups
 
 articles:
     name: # The name of the article
+        refer: true
         label: Name
         type: string
         key: true
@@ -45,5 +53,7 @@ articles:
         foreign_key: users 
 
 article_metas:
+    pagination: false
+    form: false
     article_id: # The article reference
         foreign_key: articles

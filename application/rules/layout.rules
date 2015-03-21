@@ -1,0 +1,63 @@
+(deftemplate box
+	"The Layout Box Model"
+	(slot index (type NUMBER)) ; The layout index of this box
+	(slot x (type NUMBER) (default -1)) ; X Position
+	(slot y (type NUMBER) (default -1)) ; Y Position
+	(slot width (type NUMBER)) ; Box Width
+	(slot height (type NUMBER)) ; Box Height
+	(slot margin-top (type NUMBER)) ; Box Margin Top
+	(slot margin-bottom (type NUMBER)) ; Box Margin Bottom
+	(slot margin-left (type NUMBER)) ; Box Margin Left
+	(slot margin-right (type NUMBER)) ; Box Margin Right
+)
+
+(deftemplate row
+	"The layout row"
+	(slot index (type NUMBER))
+	(slot y (type NUMBER))
+	(slot height (type NUMBER))
+	(multislot boxes)
+)
+
+(defrule make-box
+	?b <- (b ?index ?width ?height ?ml ?mr ?mt ?mb)
+	=>
+	(assert (box (index ?index) (width ?width) (height ?height)
+		(margin-left ?ml) (margin-right ?mr) (margin-top ?mt) (margin-bottom ?mb)))
+	(retract ?b)
+)
+
+(defrule place-first-item-at-left-top
+	?first <- (box (index 0) (x -1) (y -1) (height ?h))
+	=>
+	(modify ?first (x 0) (y 0))
+	(assert (row (index 0) (height ?h) (boxes 0) (y 0)))
+)
+
+(defrule place-next-item-flow-left
+	(layout "flow" "left")
+	(hgap ?gap)
+	?last <- (box (index ?l) (x ?lx&~-1) (y ?ly&~-1) (width ?lw))
+	?row  <- (row (index ?ri) (boxes $?boxes) (height ?rh))
+	(test (member$ ?l $?boxes))
+	?this <- (box (index ?t&:(= (+ ?l 1) ?t)) (x -1) (y -1) (height ?th))
+	=>
+	(modify ?this (x (+ ?lx ?lw ?gap)) (y ?ly))
+	(if (> ?th ?rh) 
+		then (modify ?row (height ?th) (boxes $?boxes ?t)) 
+		else (modify ?row (boxes $?boxes ?t)))
+)
+
+(defrule place-item-to-next-row-flow-left
+	(layout "flow" "left")
+	(total-width ?total)
+	(vgap ?gap)
+	?item <- (box (index ?i) (x ?x&~-1) (width ?width) (height ?height))
+	(test (> (+ ?x ?width) ?total))
+	?row  <- (row (index ?ri) (boxes $?boxes) (y ?ry) (height ?rh))
+	(test (member$ ?i $?boxes))
+	=>
+	(modify ?row (boxes (delete-member$ $?boxes ?i)))
+	(assert (row (index (+ ?ri 1)) (height ?height) (boxes ?i) (y (+ ?ry ?rh ?gap))))
+	(modify ?item (x 0) (y (+ ?ry ?rh ?gap)))
+)

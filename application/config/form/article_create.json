@@ -1,0 +1,34 @@
+[
+	{
+		"field": "name",
+		"label": "Name",
+		"rules": [
+			"type":"string"
+			"maxlengh":"255"
+		]
+	},
+	{
+		"field": "path",
+		"label": "Path",
+		"rules": [
+			"type":"string",
+			"maxlengh":"255"
+		]
+	},
+	{
+		"field": "repo",
+		"label": "Repository Path",
+		"rules": [
+			"type":"string",
+			"maxlengh":"1024"
+		]
+	},
+	{
+		"field": "author",
+		"label": "Author",
+		"rules": [
+			"type":"number",
+			"required"
+		]
+	}
+]

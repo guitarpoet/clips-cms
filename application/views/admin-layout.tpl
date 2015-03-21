@@ -18,7 +18,7 @@
 		{block name="foot"}{/block}
 		<!-- End Of Foot -->
 		<!-- JS -->
-        {context key='js'}
+		{js}
 		<!-- End Of JS -->
 	{/body}
 {/html}

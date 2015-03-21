@@ -1,0 +1,13 @@
+{
+	"from": "articles",
+	"columns": [
+		{ "data":"articles.id", "title":"ID" },
+		{ "data":"articles.name", "title":"Name" },
+		{ "data":"articles.path", "title":"Path" },
+		{ "data":"articles.repo", "title":"Repository Path" },
+		{ "data":"users.username", "title":"Author", "action":"user/show", "refer":"users.id" }
+	],
+	"join": [
+		["users", {"articles.author":"users.id"}]
+	]
+}
