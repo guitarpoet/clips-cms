@@ -77,6 +77,7 @@ function initialize() {
 	Clips.rules.assert(['total-width', $("#container").width()]);
 	Clips.rules.assert(['layout', 'row', 'left']);
 	Clips.rules.filter('box');
+
 	$("#container .box").each(function(i){
 		var data = ['b'];
 		var item = $(this);
@@ -90,6 +91,7 @@ function initialize() {
 		Clips.rules.assert(data);
 	});
 	Clips.rules.run(function(data){
+		console.dir(data);
 		$("#container").addClass('abs');
 		var boxes = $("#container .box");
 		$(data).each(function(i){ // Iterationg boxes

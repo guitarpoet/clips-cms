@@ -95,23 +95,64 @@
 	?box <- (box (margin-right ?mr) (index ?index) (x ?x) (width ?width&:(> (+ ?x ?width ?mr) ?total)))
 	=>
 	(assert (next-line ?index))
-	(modify ?box (x -1))
+	(modify ?box (x -1) (y -2))
 )
 
-(defrule layout-flow-move-item-to-next-line
-	"This rule"
+(defrule layout-flow-find-the-item-to-put-next-line-item-below
+    (declare (salience 100)) ; Make this higher priority
 	(next-line ?index)
 	(layout "flow" "left")
-	?last <- (box (index ?l&:(= (+ ?l 1) ?index)) (x ?lx&~-1) (y ?ly&~-1) (height ?lh) (margin-bottom ?lmb))
-	?this <- (box (index ?t&:(= ?index ?t)) (margin-top ?tmt) (x -1) (y ?y&:(< ?y (+ ?ly ?lh ?lmb ?tmt))) (margin-left ?tml))
+	(total-width ?total)
+	?this <- (box (index ?t&:(= ?t ?index)) (margin-top ?tmt) (x -1) (y -2) (width ?tw) (margin-left ?tml) (margin-right ?tmr))
+	?last <- (box (index ?l&:(< ?l ?index)) (x ?lx&~-1) (y ?ly&~-1) (margin-right ?lmr) (width ?lw&:(> (+ ?lx ?lw ?lmr ?tml ?tw ?tmr) ?total)) (height ?lh) (margin-bottom ?lmb))
 	=>
-	(modify ?this (y (+ ?ly ?lh ?lmb ?tmt)))
+	(assert (try-y (+ ?ly ?lh ?lmb ?tmt)))
+)
+
+(defrule layout-flow-add-the-default-try-y
+	(next-line ?index)
+	(layout "flow" "left")
+	?t <- (try-y ?try)
+	(not (y ?))
+	=>
+	(retract ?t)
+	(assert (y ?try))
+)
+
+(defrule layout-flow-find-the-largest-y-for-next-line-item
+	(next-line ?index)
+	(layout "flow" "left")
+	?t <- (try-y ?try)
+	?y <- (y ?oldy&:(< ?oldy ?try))
+	=>
+	(retract ?y ?t)
+	(assert (y ?try))
+)
+
+(defrule layout-flow-remove-the-useless-try-y
+	(next-line ?index)
+	(layout "flow" "left")
+	?t <- (try-y ?try)
+	?y <- (y ?oldy&:(>= ?oldy ?try))
+	=>
+	(retract ?t)
+)
+
+(defrule layout-flow-set-y-of-next-line-item
+	(next-line ?index)
+	(layout "flow" "left")
+	(not (try-y ?))
+	?y <- (y ?value)
+	?this <- (box (index ?t&:(= ?t ?index)))
+	=>
+	(modify ?this (y ?value))
+	(retract ?y)
 )
 
 (defrule layout-flow-if-no-block-box-is-there-move-the-item-to-left
 	?n <- (next-line ?index)
 	(layout "flow" "left")
-	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~1) (width ?w) (margin-left ?ml) (margin-right ?mr))
+	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~-2) (width ?w) (margin-left ?ml) (margin-right ?mr))
 	(total-width ?total)
 	(not (box (index ?bi&:(< ?bi ?index)) (x ?bx) (y ?by)
 		(width ?bw) (margin-right ?bmr&:(< (+ ?bx ?bw ?bmr ?ml ?w ?mr) ?total)) (height ?bh&:(> (+ ?bh ?by) ?y))))
@@ -125,10 +166,10 @@
 	(not (block-item ? ?))
 	(layout "flow" "left")
 	?n <- (next-line ?index)
-	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~1) (width ?w) (margin-left ?ml) (margin-right ?mr))
+	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~-2) (width ?w) (margin-left ?ml) (margin-right ?mr))
 	(total-width ?total)
 	(box (index ?bi&:(< ?bi ?index)) (x ?bx) (y ?by)
-		(width ?bw) (margin-right ?bmr&:(< (+ ?bx ?bw ?bmr ?ml ?w ?mr) ?total)) (height ?bh&:(> (+ ?bh ?by) ?y)))
+		(width ?bw) (margin-right ?bmr&:(<= (+ ?bx ?bw ?bmr ?ml ?w ?mr) ?total)) (height ?bh&:(> (+ ?bh ?by) ?y)))
 	=>
 	(assert (block ?bi ?bx))
 )
