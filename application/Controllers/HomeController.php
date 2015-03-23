@@ -31,4 +31,20 @@ class HomeController extends Controller {
 	public function red() {
 		return $this->redirect('/', true);
 	}
+
+	/**
+	 * @Clips\Library("qrcode")
+	 */
+	public function qr() {
+		$img = $this->qrcode->setText("http://bestpay.pinet.co")
+		->setSize(400)
+		->setPadding(20)
+		->setErrorCorrection('high')
+		->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
+		->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
+		->setLabel('Pinet')
+		->setLabelFontSize(16)
+		->show();
+		return $this->image($img, 'png');
+	}
 }
