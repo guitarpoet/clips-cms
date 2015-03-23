@@ -1,7 +1,7 @@
-var max = 200;
-var min = 100;
-var mutant_max = 50;
-var mutant_min = 30;
+var max = 50;
+var min = 20;
+var mutant_max = 20;
+var mutant_min = 10;
 var box_width = 100;
 var box_min_width = 30;
 var box_max_width = 300;
@@ -75,7 +75,7 @@ function initialize() {
 	Clips.rules.assert(['vgap', vgap]);
 	Clips.rules.assert(['hgap', hgap]);
 	Clips.rules.assert(['total-width', $("#container").width()]);
-	Clips.rules.assert(['layout', 'flow', 'left']);
+	Clips.rules.assert(['layout', 'row', 'left']);
 	Clips.rules.filter('box');
 	$("#container .box").each(function(i){
 		var data = ['b'];
