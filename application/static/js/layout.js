@@ -1,15 +1,15 @@
-var max = 50;
-var min = 10;
-var mutant_max = 10;
-var mutant_min = 5;
+var max = 200;
+var min = 100;
+var mutant_max = 50;
+var mutant_min = 30;
 var box_width = 100;
 var box_min_width = 30;
 var box_max_width = 300;
 var box_height = 100;
 var box_min_height = 30;
 var box_max_height = 300;
-var vgap = 0;
-var hgap = 0;
+var vgap = 10;
+var hgap = 10;
 
 Array.prototype.remove = function (item) {
 	var i = this.indexOf(item);
@@ -71,11 +71,12 @@ function generateMutantBox(i) {
 
 function initialize() {
 	var boxes = generate_boxes();
-	Clips.rules.load('/application/rules/layout.rules');
+	Clips.rules.load('application/rules/layout.rules');
 	Clips.rules.assert(['vgap', vgap]);
 	Clips.rules.assert(['hgap', hgap]);
 	Clips.rules.assert(['total-width', $("#container").width()]);
 	Clips.rules.assert(['layout', 'flow', 'left']);
+	Clips.rules.filter('box');
 	$("#container .box").each(function(i){
 		var data = ['b'];
 		var item = $(this);
@@ -89,6 +90,10 @@ function initialize() {
 		Clips.rules.assert(data);
 	});
 	Clips.rules.run(function(data){
-		console.dir(data);
+		$("#container").addClass('abs');
+		var boxes = $("#container .box");
+		$(data).each(function(i){ // Iterationg boxes
+			boxes.eq(this.index).css('left', this.x).css('top', this.y);
+		});
 	});
 }

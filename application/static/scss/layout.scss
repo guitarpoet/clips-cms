@@ -15,3 +15,10 @@
 		background-color: green;
 	}
 }
+
+#container.abs {
+	position: relative;
+	.box {
+		position: absolute;
+	}
+}

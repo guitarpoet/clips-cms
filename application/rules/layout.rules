@@ -28,36 +28,144 @@
 )
 
 (defrule place-first-item-at-left-top
-	?first <- (box (index 0) (x -1) (y -1) (height ?h))
+	?first <- (box (index 0) (x -1) (y -1))
 	=>
 	(modify ?first (x 0) (y 0))
+)
+
+(defrule layout-row-left-add-the-first-row
+	"This rule will insert the first row when the first box is layouted"
+	(layout "row" "left")
+	?first <- (box (index 0) (x 0) (y 0) (height ?h))
+	=>
 	(assert (row (index 0) (height ?h) (boxes 0) (y 0)))
 )
 
-(defrule place-next-item-flow-left
-	(layout "flow" "left")
+(defrule layout-row-left-add-item-next-to-last
+	"This rule will add the item next to the last item by default in row left layout"
+    (declare (salience -100)) ; Make this lower priority
+	(layout "row" "left")
 	(hgap ?gap)
-	?last <- (box (index ?l) (x ?lx&~-1) (y ?ly&~-1) (width ?lw))
 	?row  <- (row (index ?ri) (boxes $?boxes) (height ?rh))
-	(test (member$ ?l $?boxes))
+	?last <- (box (index ?l&:(member$ ?l $?boxes)) (x ?lx&~-1) (y ?ly&~-1) (width ?lw))
 	?this <- (box (index ?t&:(= (+ ?l 1) ?t)) (x -1) (y -1) (height ?th))
 	=>
 	(modify ?this (x (+ ?lx ?lw ?gap)) (y ?ly))
-	(if (> ?th ?rh) 
-		then (modify ?row (height ?th) (boxes $?boxes ?t)) 
-		else (modify ?row (boxes $?boxes ?t)))
+	(modify ?row (boxes $?boxes ?t))
 )
 
-(defrule place-item-to-next-row-flow-left
-	(layout "flow" "left")
+(defrule layout-row-left-set-the-height-of-the-row-to-the-highest-item-of-this-row
+	"This rule will update the row's height to the highest item of this row in row left layout"
+	(layout "row" "left")
+	(total-width ?total)
+	?row  <- (row (boxes $?boxes) (height ?rh))
+	?box <- (box (index ?index&:(member$ ?index $?boxes)) (x ?x&~-1) (y ?y&~-1)
+		(height ?height&:(> ?height ?rh)) (width ?width&:(<= (+ ?x ?width) ?total)))
+	=>
+	(modify ?row (height ?height))
+)
+
+(defrule layout-row-left-move-the-item-to-a-new-row-if-end-is-reached
+	"This rule will move the item to another new row if the end is reached"
+	(layout "row" "left")
 	(total-width ?total)
 	(vgap ?gap)
-	?item <- (box (index ?i) (x ?x&~-1) (width ?width) (height ?height))
-	(test (> (+ ?x ?width) ?total))
 	?row  <- (row (index ?ri) (boxes $?boxes) (y ?ry) (height ?rh))
-	(test (member$ ?i $?boxes))
+	?item <- (box (index ?i&:(member$ ?i $?boxes)) (x ?x&~-1) (width ?width&:(> (+ ?x ?width) ?total)) (height ?height))
 	=>
 	(modify ?row (boxes (delete-member$ $?boxes ?i)))
 	(assert (row (index (+ ?ri 1)) (height ?height) (boxes ?i) (y (+ ?ry ?rh ?gap))))
 	(modify ?item (x 0) (y (+ ?ry ?rh ?gap)))
+)
+
+(defrule layout-flow-left-add-item-next-to-last
+	"This rule will add item next to last item by default for flow left layout"
+    (declare (salience -100)) ; Make this lower priority
+	(layout "flow" "left")
+	?last <- (box (index ?l) (x ?lx&~-1) (y ?ly&~-1) (width ?lw) (margin-right ?lmr))
+	?this <- (box (index ?t&:(= (+ ?l 1) ?t)) (x -1) (y -1) (margin-left ?tml) (height ?th))
+	=>
+	(modify ?this (x (+ ?lx ?lw ?lmr ?tml)) (y ?ly))
+)
+
+(defrule layout-flow-need-to-move-item-to-next-line-if-width-exceeded
+	"This rule will mark the item index to move to next line"
+	(total-width ?total)
+	(layout "flow" "left")
+	?box <- (box (margin-right ?mr) (index ?index) (x ?x) (width ?width&:(> (+ ?x ?width ?mr) ?total)))
+	=>
+	(assert (next-line ?index))
+	(modify ?box (x -1))
+)
+
+(defrule layout-flow-move-item-to-next-line
+	(next-line ?index)
+	(layout "flow" "left")
+	?last <- (box (index ?l&:(= (+ ?l 1) ?index)) (x ?lx&~-1) (y ?ly&~-1) (height ?lh) (margin-bottom ?lmb))
+	?this <- (box (index ?t&:(= ?index ?t)) (margin-top ?tmt) (x -1) (y ?y&:(< ?y (+ ?ly ?lh ?lmb ?tmt))) (margin-left ?tml))
+	=>
+	(modify ?this (y (+ ?ly ?lh ?lmb ?tmt)))
+)
+
+(defrule layout-flow-if-no-block-box-is-there-move-the-item-to-left
+	?n <- (next-line ?index)
+	(layout "flow" "left")
+	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~1) (width ?w) (margin-left ?ml) (margin-right ?mr))
+	(total-width ?total)
+	(not (box (index ?bi&:(< ?bi ?index)) (x ?bx) (y ?by)
+		(width ?bw) (margin-right ?bmr&:(< (+ ?bx ?bw ?bmr ?ml ?w ?mr) ?total)) (height ?bh&:(> (+ ?bh ?by) ?y))))
+	=>
+	(modify ?this (x 0))
+	(retract ?n)
+)
+
+(defrule layout-flow-if-no-block-box-is-there-move-the-item-to-left-block
+    (declare (salience -100)) ; Make this lower priority
+	(not (block-item ? ?))
+	(layout "flow" "left")
+	?n <- (next-line ?index)
+	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (y ?y&~1) (width ?w) (margin-left ?ml) (margin-right ?mr))
+	(total-width ?total)
+	(box (index ?bi&:(< ?bi ?index)) (x ?bx) (y ?by)
+		(width ?bw) (margin-right ?bmr&:(< (+ ?bx ?bw ?bmr ?ml ?w ?mr) ?total)) (height ?bh&:(> (+ ?bh ?by) ?y)))
+	=>
+	(assert (block ?bi ?bx))
+)
+
+(defrule layout-flow-add-default-block-item
+	(layout "flow" "left")
+	?a <- (block ?i ?x)
+	(not (block-item ? ?))
+	=>
+	(assert (block-item ?i ?x))
+	(retract ?a)
+)
+
+(defrule layout-flow-find-good-block-item
+	(layout "flow" "left")
+	?block_item <- (block-item ?bi ?bix)
+	?block <- (block ?i ?x&:(> ?x ?bix))
+	=>
+	(retract ?block ?block_item)
+	(assert (block-item ?i ?x))
+)
+
+(defrule layout-flow-remove-blocks-if-no-use
+	(layout "flow" "left")
+	?block_item <- (block-item ?bi ?bix)
+	?block <- (block ?i ?x&:(<= ?x ?bix))
+	=>
+	(retract ?block)
+)
+
+(defrule layout-flow-place-item-next-to-block-item
+	(not (block ? ?))
+	(layout "flow" "left")
+	?block_item <- (block-item ?i ?x)
+	?block_box <- (box (index ?bi&:(= ?bi ?i)) (x ?bx) (margin-right ?bmr) (width ?bw))
+	?n <- (next-line ?index)
+	?this <- (box (index ?t&:(= ?index ?t)) (x -1) (margin-left ?tml))
+	=>
+	(retract ?block_item ?n)
+	(modify ?this (x (+ ?bx ?bw ?bmr)))
 )
