@@ -75,7 +75,7 @@ function initialize() {
 	Clips.rules.assert(['vgap', vgap]);
 	Clips.rules.assert(['hgap', hgap]);
 	Clips.rules.assert(['total-width', $("#container").width()]);
-	Clips.rules.assert(['layout', 'row', 'left']);
+	Clips.rules.assert(['layout', 'waterfall']);
 	Clips.rules.filter('box');
 
 	$("#container .box").each(function(i){
@@ -94,8 +94,13 @@ function initialize() {
 		console.dir(data);
 		$("#container").addClass('abs');
 		var boxes = $("#container .box");
+		var height = 0;
 		$(data).each(function(i){ // Iterationg boxes
+			var h = this.y + this.height + this['margin-top'] + this['margin-bottom'];
+			if(h > height)
+				height = h;
 			boxes.eq(this.index).css('left', this.x).css('top', this.y);
 		});
+		$("#container").height(height);
 	});
 }
