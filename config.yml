@@ -18,8 +18,8 @@ helpers:
     - html
 babel: /opt/local/bin/node /opt/local/bin/babel
 default_view: Smarty
-#widget_cache: true
-#debug_sass: true
+widget_cache: true
+debug_sass: true
 sass_preload:
     - variables
 models:

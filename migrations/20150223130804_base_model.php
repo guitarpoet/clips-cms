@@ -11,5 +11,14 @@ class BaseModel extends AbstractMigration {
 			'notes' => 'The root category for all categories',
 			'path' => ''
 		));
+
+		// Let's insert the basic groups
+		$model = $this->tool->model('group');
+		$model->insert(array(
+			'name' => 'guest'
+		));
+		$model->insert(array(
+			'name' => 'admin'
+		));
 	}
 }

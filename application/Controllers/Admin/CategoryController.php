@@ -3,7 +3,7 @@
 use Clips\Controller;
 
 /**
- * The main controller for all the user operations
+ * The main controller for all the category operations
  *
  * @author Jack
  * @date Tue Feb 24 16:07:01 2015

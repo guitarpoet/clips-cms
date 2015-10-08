@@ -60,17 +60,10 @@ articles:
         key: true
         options:
             limit: 255
-    path: # The path of this article
-        label: Path
-        type: string
-        key: true
-        options:
-            limit: 255
-    repo: # The repository path of this article
-        label: Repository Path
-        type: string
-        options:
-            limit: 1024
+    content:
+        label: Content
+        datatable: false
+        type: text
     author: # The author id of this article
         label: Author
         foreign_key: users 
