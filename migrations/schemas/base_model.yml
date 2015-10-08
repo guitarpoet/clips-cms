@@ -29,6 +29,29 @@ users:
         label: Group
         foreign_key: groups
 
+categories:
+    name: # The name of the category
+        label: Name
+        refer: true
+        key: true
+        type: string
+        options:
+            limit: 255
+    notes: # The notes of the category
+        label: Notes
+        type: string
+        options:
+            limit: 1024
+    parent_id:
+        label: Parent
+        foreign_key: categories
+        options:
+            "null": true
+    path: # The path of the category, this is the index for searching all the subcatgories
+        label: Category Path
+        type: string
+        options:
+            limit: 64
 articles:
     name: # The name of the article
         refer: true
@@ -51,6 +74,12 @@ articles:
     author: # The author id of this article
         label: Author
         foreign_key: users 
+
+category_articles: # The inner table for category and article
+    article_id:
+        foreign_key: articles
+    category_id:
+        foreign_key: categories
 
 article_metas:
     pagination: false

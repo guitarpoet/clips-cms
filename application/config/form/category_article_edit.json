@@ -1,0 +1,27 @@
+[
+	{
+		"field": "id",
+		"label": "ID",
+		"state": "",
+		"rules": [
+			{ "type":"number" },
+			"required"
+		]
+	},
+	{
+		"field": "article_id",
+		"label": "ArticleId",
+		"rules": [
+			{ "type":"number" },
+			"required"
+		]
+	},
+	{
+		"field": "category_id",
+		"label": "CategoryId",
+		"rules": [
+			{ "type":"number" },
+			"required"
+		]
+	}
+]

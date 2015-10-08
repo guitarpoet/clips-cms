@@ -1,0 +1,46 @@
+[
+	{
+		"field": "id",
+		"label": "ID",
+		"state": "",
+		"rules": [
+			{ "type":"number" },
+			"required"
+		]
+	},
+	{
+		"field": "name",
+		"label": "Name",
+		"rules": [
+			{ "type":"string" },
+			{ "maxlengh":"255" },
+			"required"
+		]
+	},
+	{
+		"field": "notes",
+		"label": "Notes",
+		"rules": [
+			{ "type":"string" },
+			{ "maxlengh":"1024" },
+			"required"
+		]
+	},
+	{
+		"field": "parent_id",
+		"label": "Parent",
+		"rules": [
+			{ "type":"number" },
+			"required"
+		]
+	},
+	{
+		"field": "path",
+		"label": "Category Path",
+		"rules": [
+			{ "type":"string" },
+			{ "maxlengh":"64" },
+			"required"
+		]
+	}
+]

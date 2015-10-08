@@ -3,7 +3,12 @@
 	{/head}
 	{body}
 		{ul items=$error}
-			{literal}{li}{$item[0]}{/li}{/literal}
+			{literal}
+			{li}
+				{h2}Error Cause [{$item->cause}]{/h2}
+				{ul items=$item->message}{/ul}
+			{/li}
+			{/literal}
 		{/ul}
 	{/body}
 {/html}

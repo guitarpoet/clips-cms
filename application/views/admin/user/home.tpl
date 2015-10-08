@@ -1,13 +1,10 @@
-{extends file='admin-layout.tpl'}
-	{block name="main"}
-		{container}
-			{row id="toolbar"}
-				{a class="btn btn-default" uri="admin/user/create"}
-					{lang}Add{/lang}
-				{/a}
-			{/row}
-			{row}
-				{datatable name="user"}
-			{/row}
-		{/container}
-	{/block}
+{extends file="bootstrap-layout.tpl"}
+							{block name="toolbar"}
+								{action action=$create class=["btn", "btn-primary"]}{/action}
+								{action datatable-for="user" action=$show class=["btn", "btn-info"]}{/action}
+								{action datatable-for="user" action=$edit class=["btn", "btn-warning"]}{/action}
+								{action datatable-for="user" action=$delete class=["btn", "btn-danger"]}{/action}
+							{/block}
+									{block name="workbench"}
+										{datatable name="user"}
+									{/block}

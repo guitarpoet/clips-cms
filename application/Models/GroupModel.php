@@ -1,6 +1,6 @@
 <?php namespace Clips\Cms\Models; in_array(__FILE__, get_included_files()) or exit("No direct sript access allowed");
 
-use Clips\Libraries\DBModel;
+use Clips\Libraries\DBModelV2;
 
 /**
  * Model to manipulate table groups
@@ -11,5 +11,5 @@ use Clips\Libraries\DBModel;
  *
  * @Clips\Model
  */
-class GroupModel extends DBModel {
+class GroupModel extends DBModelV2 {
 }

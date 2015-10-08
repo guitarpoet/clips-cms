@@ -1,0 +1,13 @@
+{
+	"from": "category_articles",
+	"columns": [
+		{ "data":"category_articles.id", "action":"category_article/show", "title":"ID" },
+		{ "data":"articles.name", "title":"CategoryArticle ArticleId", "action":"article/show", "refer":"articles.id" },
+		{ "data":"categories.name", "title":"CategoryArticle CategoryId", "action":"categorie/show", "refer":"categories.id" }
+	],
+	"join": [
+		["articles", {"category_articles.article_id":"articles.id"}]
+	,
+		["categories", {"category_articles.category_id":"categories.id"}]
+	]
+}

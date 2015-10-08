@@ -3,7 +3,7 @@
 use Clips\Controller;
 
 /**
- * @Clips\Widget({"html", "lang"})
+ * @Clips\Widget({"html", "lang", "grid", "scaffold"})
  */
 class HomeController extends Controller {
 

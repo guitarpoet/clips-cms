@@ -1,0 +1,10 @@
+{
+	"from": "categories",
+	"columns": [
+		{ "data":"categories.id", "action":"admin/category/show", "title":"ID" },
+		{ "data":"categories.path", "title":"Category Path", "field_type":"string" },
+		{ "data":"categories.parent_id", "title":"Parent ID", "action":"admin/category/show" },
+		{ "data":"categories.name", "title":"Name", "field_type":"string" },
+		{ "data":"categories.notes", "title":"Notes", "field_type":"string" }
+	]
+}

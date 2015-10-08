@@ -1,0 +1,55 @@
+namespace:
+    - Clips\Cms
+route_rules:
+    - /application/rules/route.rules
+    - /rules/route.rules
+filters:
+    - Widget
+    - Rules
+    - Form
+    - Scss
+    - Css
+    - SmartyView
+    - MustacheView
+    - JsonView
+    - DirectView
+helpers:
+    - web
+    - html
+babel: /opt/local/bin/node /opt/local/bin/babel
+default_view: Smarty
+#widget_cache: true
+#debug_sass: true
+sass_preload:
+    - variables
+models:
+    article:
+        datasource: clips
+    articleMeta:
+        datasource: clips
+logger:
+    handlers:
+        Stream:
+            - php://stdin
+            - debug
+        FirePHP:
+            - debug
+        ChromePHP:
+            - debug
+    processors:
+        - Git
+        - PsrLogMessage
+        - Introspection
+        - Tag
+datasources:
+    default: clips
+    mysql:
+        type: MySQLi
+        table_prefix: cms_
+        database: cms_dev
+    clips:
+        type: clips
+        datasource: mysql
+        table_prefix: cms_
+        filters:
+            - prefix
