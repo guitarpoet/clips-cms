@@ -12,8 +12,9 @@ use Clips\Libraries\DBModelV2;
  * @Clips\Model(table="categories")
  */
 class CategoryModel extends DBModelV2 {
-	public function insert($data) {
-		$data['id'] = parent::insert($data);
+	public function insert($table, $obj = array()) {
+		$data = $table; // We only support the insert(object|array) mode
+		$data['id'] = parent::insert($table, $obj);
 		$data['path'] = $this->getPath($data);
 		$this->update((object) $data);
 		return $data['id'];
