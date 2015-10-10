@@ -11,4 +11,13 @@ class HomeController extends Controller {
 		$this->title('Clips CMS');
 		return $this->render('home');
 	}
+
+	public function browser() {
+		if($this->request->isMobile()) {
+			echo 'Mobile';
+		}
+		else {
+			echo 'PC';
+		}
+	}
 }

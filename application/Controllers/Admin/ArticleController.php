@@ -31,12 +31,37 @@ class ArticleController extends Controller {
 	}
 
 	/**
+	 * @Clips\Form('article_edit')
+	 * @Clips\Actions("admin/article")
+	 */
+	public function edit($id) {
+		$data = $this->article->load($id);
+		$data->{"categories[]"} = $this->article->getCategories($id);
+		$this->title("Edit Article [{$data->name}]", true);
+		$this->formData("article_edit", $data);
+		return $this->render('admin/article/edit', array('categories' => 
+			$this->category->get(), 'users' => $this->user->get()));
+	}
+
+	public function delete($id = null) {
+		if($id) {
+			$this->article->delete($id);
+		}
+		else {
+			 $this->article->delete($this->post('ids'));
+		}
+		return $this->redirect(\Clips\site_url('admin/article'));
+	}
+
+	/**
 	 * @Clips\Form('article_create')
 	 */
 	public function create_form() {
-		var_dump($this->post());
-		exit;
-		$this->article->insert($this->category->cleanFields('articles', $this->post()));
+		$id = $this->article->insert($this->category->cleanFields('articles', $this->post()));
+		$cats = $this->post('categories', null);
+		if($cats) {
+			$this->article->addToCategories($id, $cats);
+		}
 		return $this->redirect(\Clips\site_url('admin/article'));
 	}
 }

@@ -12,4 +12,21 @@ use Clips\Libraries\DBModelV2;
  * @Clips\Model
  */
 class ArticleModel extends DBModelV2 {
+	public function getCategories($aid) {
+		$result = $this->select('category_id')->from('category_articles')
+			->where(array('article_id' => $aid))->result();
+		if($result) {
+			return array_map(function($item){return $item->category_id;}, $result);
+		}
+		return array();
+	}
+
+	public function addToCategories($aid, $cats) {
+		foreach($cats as $cid) {
+			$this->insert('category_articles', array(
+				'article_id' => $aid,
+				'category_id' => $cid
+			));
+		}
+	}
 }
